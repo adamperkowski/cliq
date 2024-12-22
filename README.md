@@ -1,14 +1,22 @@
-# cliq
-The Jule CLI Library
+<div align='center'>
 
-## Installation
-To install the library, follow the steps below:
+# <img width='512' src='/cliq.webp'><br>The Jule CLI Library
 
-- Download the library package from the [releases page](https://github.com/adamperkowski/cliq/releases)
-- Extract the package
-- Include the extracted directory in your project's source (don't forget to run `julec mod init`)
+A Jule library for creating command-line interfaces.
+
+[Usage](#usage) |
+[Examples](/examples) |
+[Donate](https://github.com/sponsors/adamperkowski)
+
+</div>
 
 ## Usage
+To install the library, follow the steps below:
+
+1. Download the library package from the [releases page](https://github.com/adamperkowski/cliq/releases)
+2. Extract the package
+3. Include the extracted directory in your project's source (don't forget to run `julec mod init`)
+
 Example usage of the library:
 
 ```jule
