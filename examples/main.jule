@@ -6,6 +6,20 @@
 
 use "../cliq"
 
+static ArgMap: map[int][2]str = {
+	1: ["testarg", "This is a test argument"],
+	2: ["ver", "Display version information"],
+}
+
 fn main() {
-	cliq::Cliq()
+	let mut cliq = cliq::Init(ArgMap)
+	cliq.Parse(false)
+
+	if cliq.Res["testarg"] {
+		println("Test Argument Found!")
+	}
+
+	if cliq.Res["ver"] {
+		println("You really thought I'll version examples?")
+	}
 }

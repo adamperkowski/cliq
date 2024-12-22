@@ -4,6 +4,68 @@
 // Copyright (c) 2024, Adam Perkowski
 // BSD 3-Clause License
 
-fn Cliq() {
-	println("Hello, world!")
+use "std/maps"
+use "std/os"
+use "std/slices"
+use "std/strings"
+
+struct Cliq {
+	args:   []str
+	argmap: map[int][2]str
+	Res:    map[str]bool
+}
+
+impl Cliq {
+	fn Parse(mut self, allow_multiple: bool) {
+		let mut result: map[str]bool = {}
+		mut found := false
+
+		for _, arg in self.args {
+			for _, a in self.argmap {
+				if arg == a[0] {
+					result[a[0]] = true
+
+					if !allow_multiple {
+						found = true
+						break
+					}
+				}
+			}
+
+			if found {
+				break
+			}
+		}
+
+		self.Res = result
+
+		if self.Res["help"] {
+			self.DsiplayHelp()
+			os::Exit(0)
+		}
+	}
+
+	fn DsiplayHelp(self) {
+		mut max_width := 0
+
+		for _, a in self.argmap {
+			if len(a[0]) > max_width {
+				max_width = len(a[0])
+			}
+		}
+
+		for _, a in self.argmap {
+			println(a[0] + strings::Repeat(" ", max_width-len(a[0])) + "   " + a[1])
+		}
+	}
+}
+
+fn Init(argmap: map[int][2]str): Cliq {
+	mut argmap_final := argmap
+	argmap_final[0] = ["help", "Display CLI information"]
+
+	ret Cliq{
+		args: os::Args(),
+		argmap: argmap,
+	}
 }
