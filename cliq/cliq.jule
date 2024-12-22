@@ -40,12 +40,12 @@ impl Cliq {
 		self.Res = result
 
 		if self.Res["help"] {
-			self.DsiplayHelp()
+			self.DisplayHelp()
 			os::Exit(0)
 		}
 	}
 
-	fn DsiplayHelp(self) {
+	fn DisplayHelp(self) {
 		mut max_width := 0
 
 		for _, a in self.argmap {

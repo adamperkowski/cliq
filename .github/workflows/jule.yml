@@ -4,6 +4,7 @@ on:
     paths:
       - "examples/**/*"
       - "cliq/**/*"
+    branches: ["main"]
   pull_request:
   workflow_dispatch:
 
