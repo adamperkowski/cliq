@@ -1,0 +1,11 @@
+// cliq
+// The Jule CLI Library
+// https://github.com/adamperkowski/cliq
+// Copyright (c) 2024, Adam Perkowski
+// BSD 3-Clause License
+
+use "../cliq"
+
+fn main() {
+	cliq::Cliq()
+}
