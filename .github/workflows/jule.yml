@@ -36,15 +36,16 @@ jobs:
       - name: Format
         run: |
           julefmt -w cliq
-          julefmt -w examples
+          cd examples
+          make format
       - name: Build examples
         run: |
           cd examples
-          julec .
+          make all
 
       - name: Clean up
         run: |
-          rm -rf .julec .julefmt **/.*out
+          rm -rf .julec .julefmt **/.*out **/bin
 
       - name: Check formatting
         run: |
