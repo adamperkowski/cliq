@@ -7,13 +7,14 @@
 use "../cliq"
 
 static ArgMap: map[int][2]str = {
+	// the indexes start from 1 because 0 is reserved for `help`
 	1: ["testarg", "This is a test argument"],
 	2: ["ver", "Display version information"],
 }
 
 fn main() {
 	let mut cliq = cliq::Init(ArgMap)
-	cliq.Parse(false)
+	cliq.Parse(/* allow_multiple: */ false)
 
 	if cliq.Res["testarg"] {
 		println("Test Argument Found!")

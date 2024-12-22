@@ -14,7 +14,19 @@ Example usage of the library:
 ```jule
 use "cliq"
 
-fn main() {}
+static ArgMap: map[int][2]str = {
+	// the indexes start from 1 because 0 is reserved for `help`
+	1: ["version", "Display version information"],
+}
+
+fn main() {
+	let mut cliq = cliq::Init()
+	cliq.Parse(/* allow_multiple: */ false)
+
+	if cliq.Res["version"] {
+		println("version goes here...")
+	}
+}
 ```
 
 See the [examples](/examples) directory for more examples.
