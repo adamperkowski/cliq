@@ -13,7 +13,7 @@ static ArgMap: map[int][2]str = {
 }
 
 fn main() {
-	let mut cliq = cliq::Init(ArgMap)
+	mut cliq := cliq::Init(ArgMap)
 	cliq.Parse(/* allow_multiple: */ false)
 
 	if cliq.Res["testarg"] {

@@ -20,7 +20,7 @@ static ArgMap: map[int][2]str = {
 }
 
 fn main() {
-	let mut cliq = cliq::Init()
+	mut cliq := cliq::Init()
 	cliq.Parse(/* allow_multiple: */ false)
 
 	if cliq.Res["version"] {
@@ -30,3 +30,7 @@ fn main() {
 ```
 
 See the [examples](/examples) directory for more examples.
+
+## License
+The extension is distributed under the terms of the BSD 3-Clause license.<br>
+[See License Details](/LICENSE)
