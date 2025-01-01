@@ -1,7 +1,7 @@
 # cliq
 # The Jule CLI Library
 # https://github.com/adamperkowski/cliq
-# Copyright (c) 2024, Adam Perkowski
+# Copyright (c) 2025, Adam Perkowski
 # BSD 3-Clause License
 
 JULEC = julec
