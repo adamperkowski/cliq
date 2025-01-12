@@ -30,22 +30,14 @@ jobs:
           echo "$(pwd)/bin" >> $GITHUB_PATH
           cd ..
 
-      - name: Test
+      - name: Run checks
         run: |
-          julec test cliq
-      - name: Format
-        run: |
-          julefmt -w cliq
-          cd examples
-          make format
-      - name: Build examples
-        run: |
-          cd examples
-          make all
+          make .PHONY
 
       - name: Clean up
         run: |
           rm -rf .julec .julefmt **/.*out **/bin
+          make clean
 
       - name: Check formatting
         run: |

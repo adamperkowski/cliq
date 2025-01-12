@@ -4,9 +4,9 @@ This directory contains examples of how to use the cliq library.
 
 You can compile all the examples using:
 ```bash
-$ make all
+$ make examples
 ```
-Executables will be placed in the `bin` directory.
+Executables will be placed in the `examples/bin` directory.
 
 ## Simple
 Demonstrates how to create a simple CLI application with custom commands.
