@@ -5,11 +5,13 @@
 // BSD 3-Clause License
 
 use er "internal/error"
+use "std/fmt"
 use "std/os"
 use ss "std/strings"
 
 enum ArgType: type {
 	bool,
+	str,
 }
 
 struct Builder {
@@ -51,6 +53,8 @@ impl Cliq {
 		match type arg {
 		| bool:
 			ret bool(arg)
+		| str:
+			ret str(arg)
 		|:
 			ret arg
 		}
@@ -65,19 +69,25 @@ impl Cliq {
 	}
 
 	fn Parse(mut self) {
-		for _, arg in self.cli {
+		for i, _ in self.cli {
 			for k, v in self.args {
-				if arg == k {
+				if self.cli[i] == k {
 					match type v {
 					| bool:
 						self.args[k] = true
+					| str:
+						if len(self.cli)-1 > i {
+							self.args[k] = self.cli[i+1]
+						} else {
+							self.displayError(er::VAL_REQUIRED, k)
+						}
 					}
-				} else if arg == "--no"+ss::TrimPrefix(k, "--") {
+				} else if self.cli[i] == "--no"+ss::TrimPrefix(k, "--") {
 					match type v {
 					| bool:
 						self.args[k] = false
 					|:
-						self.displayError(er::NOFLAG_NOT_BOOL)
+						self.displayError(er::NOFLAG_NOT_BOOL, k)
 					}
 				}
 			}
@@ -106,15 +116,17 @@ impl Cliq {
 			match type v {
 			| bool:
 				res += "bool\n"
+			| str:
+				res += "string\n"
 			}
 		}
 
 		ret res
 	}
 
-	fn displayError(self, msg: str) {
+	fn displayError(self, msg: str, msgArgs: ...any) {
 		print("error: ")
-		println(msg)
+		fmt::Printf(msg+"\n", msgArgs)
 
 		println(er::TRY_HELP)
 

@@ -9,7 +9,7 @@ use cliq "../.."
 static cliqBuilder: cliq::Builder = cliq::Builder{
 	Args: {
 		// flag: default value (type)
-		"test": false,
+		"test": "",
 		"version": false,
 	},
 }
@@ -20,9 +20,10 @@ fn main() {
 	cliq.GetCLI() // Get the CLI arguments
 	cliq.Parse()  // Parse the CLI arguments
 
-	if cliq.Get("test") == true { // bool due to the default value
-		println("Test flag is set!")
-	} else if cliq.Get("version") == true {
+	if cliq.Get("test") != "" { // str due to the default value
+		print("received: ")
+		println(cliq.Get("test"))
+	} else if cliq.Get("version") == true { // bool due to the default value
 		println("Version flag is set!")
 	} else {
 		println("No flags are set!")
