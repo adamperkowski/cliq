@@ -1,2 +1,6 @@
+cliq
+**/*.tar.gz
+**/*.zip
 **/*.out
 **/dist
+**/bin

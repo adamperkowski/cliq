@@ -1,10 +1,12 @@
 // cliq
 // The Jule CLI Library
 // https://github.com/adamperkowski/cliq
-// Copyright (c) 2024, Adam Perkowski
+// Copyright (c) 2025, Adam Perkowski
 // BSD 3-Clause License
 
-use "../cliq"
+use cliq "../.."
+use "std/maps"
+use "std/slices"
 
 static ArgMap: map[int][2]str = {
 	// the indexes start from 1 because 0 is reserved for `help`
@@ -16,11 +18,15 @@ fn main() {
 	mut cliq := cliq::Init(ArgMap)
 	cliq.Parse(/* allow_multiple: */ false)
 
+	if !slices::Contains(maps::Values(cliq.Res), true) {
+		println("No arguments found!")
+	}
+
 	if cliq.Res["testarg"] {
-		println("Test Argument Found!")
+		println("Test argument Found!")
 	}
 
 	if cliq.Res["ver"] {
-		println("You really thought I'll version examples?")
+		println("You really thought I'll version examples?!")
 	}
 }

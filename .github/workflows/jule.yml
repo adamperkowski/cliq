@@ -3,7 +3,7 @@ on:
   push:
     paths:
       - "examples/**/*"
-      - "cliq/**/*"
+      - "**/*.jule"
     branches: ["main"]
   pull_request:
   workflow_dispatch:
@@ -15,12 +15,14 @@ jobs:
       - uses: actions/checkout@v4
 
       - name:  Install JuleC
-        run: |
-          mkdir .julec
-          cd .julec
-          bash <(curl -s https://raw.githubusercontent.com/julelang/julec-ir/main/compile-ir.sh)
-          echo "$(pwd)/jule-master/bin" >> $GITHUB_PATH
-          cd ..
+        uses: Panquesito7/setup-jule@v1.1.3
+        with:
+          version: dev
+          directory: .julec
+
+      - name: Add JuleC to PATH
+        run: echo "$(pwd)/.julec/julec-dev/bin" >> $GITHUB_PATH
+
       - name: Install JuleFmt
         run: |
           git clone https://github.com/julelang/julefmt.git --depth=1 .julefmt
@@ -30,21 +32,14 @@ jobs:
           echo "$(pwd)/bin" >> $GITHUB_PATH
           cd ..
 
-      - name: Test
+      - name: Run checks
         run: |
-          julec test cliq
-      - name: Format
-        run: |
-          julefmt -w cliq
-          julefmt -w examples
-      - name: Build examples
-        run: |
-          cd examples
-          julec .
+          make .PHONY
 
       - name: Clean up
         run: |
-          rm -rf .julec .julefmt **/.*out
+          rm -rf .julec .julefmt **/.*out **/dist
+          make clean
 
       - name: Check formatting
         run: |

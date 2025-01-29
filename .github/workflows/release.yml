@@ -33,7 +33,7 @@ jobs:
           git add CHANGELOG.md
           git commit -m "chore(release): prepare for ${{ github.event.inputs.version }}"
           git tag -a ${{ github.event.inputs.version }} -m "${{ github.event.inputs.version }}"
-          git push https://${{ secrets.GH_TOKEN }}@github.com/adamperkowski/cliq.git ${{ github.event.inputs.version }}
+          git push https://${{ secrets.GH_TOKEN }}@github.com/adamperkowski/cliq.git HEAD:refs/heads/main --follow-tags
 
   release:
     runs-on: ubuntu-latest
@@ -46,10 +46,7 @@ jobs:
 
       - name: Prepare files
         run: |
-          cp LICENSE cliq/LICENSE
-          cp CHANGELOG.md cliq/CHANGELOG.md
-          tar -czf cliq-${{ github.event.inputs.version }}.tar.gz cliq
-          zip -r cliq-${{ github.event.inputs.version }}.zip cliq
+          VERSION=${{ github.event.inputs.version }} make package
 
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -58,7 +55,7 @@ jobs:
           name: ${{ github.event.inputs.version }}
           body: |
             cliq ${{ github.event.inputs.version }}
-            ## major changes
+            ## Major Changes
           append_body: true
           files: |
             cliq-${{ github.event.inputs.version }}.tar.gz
