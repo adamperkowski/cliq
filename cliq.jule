@@ -4,6 +4,7 @@
 // Copyright (c) 2025, Adam Perkowski
 // BSD 3-Clause License
 
+use er "internal/error"
 use "std/os"
 use ss "std/strings"
 
@@ -71,6 +72,13 @@ impl Cliq {
 					| bool:
 						self.args[k] = true
 					}
+				} else if arg == "--no"+ss::TrimPrefix(k, "--") {
+					match type v {
+					| bool:
+						self.args[k] = false
+					|:
+						self.displayError(er::NOFLAG_NOT_BOOL)
+					}
 				}
 			}
 		}
@@ -79,7 +87,7 @@ impl Cliq {
 		| bool:
 			if bool(self.args["--help"]) && self.autoHelp {
 				print(self.AutoHelp())
-				os::Exit(1)
+				os::Exit(0)
 			}
 		}
 	}
@@ -102,5 +110,14 @@ impl Cliq {
 		}
 
 		ret res
+	}
+
+	fn displayError(self, msg: str) {
+		print("error: ")
+		println(msg)
+
+		println(er::TRY_HELP)
+
+		os::Exit(2)
 	}
 }

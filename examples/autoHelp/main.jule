@@ -26,18 +26,19 @@ fn auto() {
 	} else {
 		println("Test flag is not set!")
 	}
-	/* `autoHelp --help` will output:
+}
+
+/*  `autoHelp --help` will output:
 Flags:
    --test   bool
    --help   bool
 
-	   `autoHelp --test` will output:
+	`autoHelp --test` will output:
 Test flag is set!
 
-	   `autoHelp` will output:
+	`autoHelp` will output:
 Test flag is not set!
-	*/
-}
+*/
 
 fn manual() {
 	mut cliqManual := cliq::Builder{
@@ -54,9 +55,9 @@ fn manual() {
 	} else {
 		println("Help flag is not set!")
 	}
-	/* This will output:
+}
+
+/*  This will output:
 Flags:
    --help   bool
-
-	*/
-}
+*/

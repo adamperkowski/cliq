@@ -1,0 +1,47 @@
+// cliq
+// The Jule CLI Library
+// https://github.com/adamperkowski/cliq
+// Copyright (c) 2025, Adam Perkowski
+// BSD 3-Clause License
+
+use cliq "../.."
+
+static cliqBuilder: cliq::Builder = cliq::Builder{
+	Args: {
+		"test": true,     // default set to bool true
+		"version": false, // default set to bool false
+	},
+}
+
+fn main() {
+	mut cliq := cliqBuilder.Build()
+
+	cliq.GetCLI()
+	cliq.Parse()
+
+	if cliq.Get("test") == true {
+		println("Test flag is set!")
+	}
+
+	if cliq.Get("version") == true {
+		println("Version flag is set!")
+	}
+
+	if cliq.Get("test") == false && cliq.Get("version") == false {
+		println("No flags are set!")
+	}
+}
+
+/*  `defaultValues` will output:
+Test flag is set!
+
+	`defaultValues --test` will output:
+Test flag is set!
+
+	`defaultValues --version` will output:
+Test flag is set!
+Version flag is set!
+
+	`defaultValues --notest` will output:
+No flags are set!
+*/

@@ -8,7 +8,7 @@ JULEC = julec
 JULEFMT = julefmt
 
 NAME = cliq
-EXAMPLES = simple autoHelp
+EXAMPLES = simple autoHelp defaultValues
 LIB = $(NAME).jule LICENSE README.md
 
 examples:
@@ -20,6 +20,14 @@ examples:
 		cd ../..; \
 	done
 
+run-examples: examples
+	echo
+	@for example in $(EXAMPLES); do \
+		echo -e "Running $$example..."; \
+		./examples/bin/$$example $(TESTARGS); \
+		echo; \
+	done
+
 format:
 	$(JULEFMT) -w .
 	@for example in $(EXAMPLES); do \
@@ -27,9 +35,11 @@ format:
 	done
 
 test:
+	cd tests
 	mkdir -p bin
 	$(JULEC) test . -o bin/$(NAME)_test
 	./bin/$(NAME)_test
+	cd ..
 
 package:
 	mkdir -p $(NAME)
@@ -38,6 +48,6 @@ package:
 	zip -r $(NAME)-$(VERSION).zip $(NAME)
 
 clean:
-	rm -rf bin examples/bin $(NAME) *.tar.gz *.zip
+	rm -rf bin examples/bin tests/bin $(NAME) *.tar.gz *.zip
 
-.PHONY: examples format test clean
+.PHONY: examples run-examples format test clean
