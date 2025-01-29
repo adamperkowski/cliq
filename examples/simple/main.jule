@@ -5,28 +5,26 @@
 // BSD 3-Clause License
 
 use cliq "../.."
-use "std/maps"
-use "std/slices"
 
-static ArgMap: map[int][2]str = {
-	// the indexes start from 1 because 0 is reserved for `help`
-	1: ["testarg", "This is a test argument"],
-	2: ["ver", "Display version information"],
+static cliqBuilder: cliq::Builder = cliq::Builder{
+	Args: {
+		// flag: default value (type)
+		"test": false,
+		"version": false,
+	},
 }
 
 fn main() {
-	mut cliq := cliq::Init(ArgMap)
-	cliq.Parse(/* allow_multiple: */ false)
+	mut cliq := cliqBuilder.Build() // Build the CLI (clig::Cliq)
 
-	if !slices::Contains(maps::Values(cliq.Res), true) {
-		println("No arguments found!")
-	}
+	cliq.GetCLI() // Get the CLI arguments
+	cliq.Parse()  // Parse the CLI arguments
 
-	if cliq.Res["testarg"] {
-		println("Test argument Found!")
-	}
-
-	if cliq.Res["ver"] {
-		println("You really thought I'll version examples?!")
+	if cliq.Get("test") == true { // bool due to the default value
+		println("Test flag is set!")
+	} else if cliq.Get("version") == true {
+		println("Version flag is set!")
+	} else {
+		println("No flags are set!")
 	}
 }

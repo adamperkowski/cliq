@@ -5,65 +5,102 @@
 // BSD 3-Clause License
 
 use "std/os"
-use "std/strings"
+use ss "std/strings"
+
+enum ArgType: type {
+	bool,
+}
+
+struct Builder {
+	Args:     map[str]ArgType
+	autoHelp: bool
+}
+
+impl Builder {
+	fn Help(mut self): Builder {
+		self.Args["help"] = false
+		self.autoHelp = true
+		ret self
+	}
+
+	fn Build(self): Cliq {
+		mut args := map[str]ArgType{}
+
+		for k, v in self.Args {
+			args["--"+ss::TrimPrefix(k, "--")] = v
+		}
+
+		ret Cliq{
+			args: args,
+			autoHelp: self.autoHelp,
+		}
+	}
+}
 
 struct Cliq {
-	args:   []str
-	argmap: map[int][2]str
-	Res:    map[str]bool
+	cli:      []str
+	args:     map[str]ArgType
+	autoHelp: bool
 }
 
 impl Cliq {
-	fn Parse(mut self, allow_multiple: bool) {
-		let mut result: map[str]bool = {}
-		mut found := false
+	fn Get(self, key: str): any {
+		arg := self.args["--"+ss::TrimPrefix(key, "--")]
 
-		for _, arg in self.args {
-			for _, a in self.argmap {
-				if arg == a[0] {
-					result[a[0]] = true
+		match type arg {
+		| bool:
+			ret bool(arg)
+		|:
+			ret arg
+		}
+	}
 
-					if !allow_multiple {
-						found = true
-						break
+	fn GetCLI(mut self) {
+		self.cli = os::Args()
+	}
+
+	fn SetCLI(mut self, cli: str) {
+		self.cli = ss::Split(cli, " ")
+	}
+
+	fn Parse(mut self) {
+		for _, arg in self.cli {
+			for k, v in self.args {
+				if arg == k {
+					match type v {
+					| bool:
+						self.args[k] = true
 					}
 				}
 			}
-
-			if found {
-				break
-			}
 		}
 
-		self.Res = result
-
-		if self.Res["help"] {
-			self.DisplayHelp()
-			os::Exit(0)
+		match type self.args["--help"] {
+		| bool:
+			if bool(self.args["--help"]) && self.autoHelp {
+				print(self.AutoHelp())
+				os::Exit(1)
+			}
 		}
 	}
 
-	fn DisplayHelp(self) {
-		mut max_width := 0
-
-		for _, a in self.argmap {
-			if len(a[0]) > max_width {
-				max_width = len(a[0])
+	fn AutoHelp(self): str {
+		mut maxWidth := 0
+		for k, _ in self.args {
+			if len(k) > maxWidth {
+				maxWidth = len(k)
 			}
 		}
 
-		for _, a in self.argmap {
-			println(a[0] + strings::Repeat(" ", max_width-len(a[0])) + "   " + a[1])
+		mut res := "Flags:\n"
+		for k, v in self.args {
+			res += "   " + k + ss::Repeat(" ", maxWidth-len(k)) + "   "
+			match type v {
+			| bool:
+				res += "bool\n"
+			}
 		}
-	}
-}
 
-fn Init(argmap: map[int][2]str): Cliq {
-	mut argmap_final := argmap
-	argmap_final[0] = ["help", "Display CLI information"]
-
-	ret Cliq{
-		args: os::Args(),
-		argmap: argmap,
+		ret res
 	}
 }

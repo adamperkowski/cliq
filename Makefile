@@ -8,7 +8,7 @@ JULEC = julec
 JULEFMT = julefmt
 
 NAME = cliq
-EXAMPLES = simple
+EXAMPLES = simple autoHelp
 LIB = $(NAME).jule LICENSE README.md
 
 examples:

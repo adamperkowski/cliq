@@ -1,0 +1,62 @@
+// cliq
+// The Jule CLI Library
+// https://github.com/adamperkowski/cliq
+// Copyright (c) 2025, Adam Perkowski
+// BSD 3-Clause License
+
+use cliq "../.."
+
+fn main() {
+	auto()
+	manual()
+}
+
+fn auto() {
+	mut cliqAuto := cliq::Builder{
+		Args: {
+			"test": false, // Manually create a test flag
+		},
+	}.Help().Build() // Automatically create a help flag
+
+	cliqAuto.GetCLI()
+	cliqAuto.Parse() // Parse the CLI arguments
+
+	if cliqAuto.Get("test") == true {
+		println("Test flag is set!")
+	} else {
+		println("Test flag is not set!")
+	}
+	/* `autoHelp --help` will output:
+Flags:
+   --test   bool
+   --help   bool
+
+	   `autoHelp --test` will output:
+Test flag is set!
+
+	   `autoHelp` will output:
+Test flag is not set!
+	*/
+}
+
+fn manual() {
+	mut cliqManual := cliq::Builder{
+		Args: {
+			"help": false, // Manually create a help flag
+		},
+	}.Build()
+
+	cliqManual.SetCLI("--help") // Manually set the CLI arguments
+	cliqManual.Parse()          // Parse the CLI arguments
+
+	if cliqManual.Get("help") == true {
+		print(cliqManual.AutoHelp())
+	} else {
+		println("Help flag is not set!")
+	}
+	/* This will output:
+Flags:
+   --help   bool
+
+	*/
+}

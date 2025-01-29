@@ -1,0 +1,48 @@
+use "std/testing"
+
+#test
+fn autoHelp(t: &testing::T) {
+	builder := Builder{Args: {}}.Help()
+
+	cliq := builder.Build()
+
+	t.Assert(cliq.Get("help") == false, "help should be false")
+
+	expected := "Flags:\n   --help   bool\n"
+	help := cliq.AutoHelp()
+
+	t.Assert(help == expected, "help should be equal to expected")
+}
+
+#test
+fn getting(t: &testing::T) {
+	builder := Builder{
+		Args: {
+			"test": false,
+			"--another": true,
+		},
+	}
+
+	cliq := builder.Build()
+
+	// this needs to test type matching
+	t.Assert(cliq.Get("test") == false, "--test should be true")
+	t.Assert(cliq.Get("another") == true, "--another should be true")
+}
+
+#test
+fn parsing(t: &testing::T) {
+	builder := Builder{
+		Args: {
+			"test": false,
+		},
+	}
+
+	mut cliq := builder.Build()
+
+	cliq.SetCLI("--test")
+	cliq.Parse()
+
+	// this needs to test type matching
+	t.Assert(cliq.Get("test") == true, "--test should be true")
+}
