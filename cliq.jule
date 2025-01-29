@@ -27,7 +27,7 @@ impl Builder {
 	}
 
 	fn Build(self): Cliq {
-		mut args := map[str]ArgType{}
+		let mut args: map[str]ArgType = {}
 
 		for k, v in self.Args {
 			args["--"+ss::TrimPrefix(k, "--")] = v
