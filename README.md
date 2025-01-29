@@ -22,17 +22,24 @@ Example usage of the library:
 ```jule
 use "cliq"
 
-static ArgMap: map[int][2]str = {
-	// the indexes start from 1 because 0 is reserved for `help`
-	1: ["version", "Display version information"],
-}
-
 fn main() {
-	mut cliq := cliq::Init()
-	cliq.Parse(/* allow_multiple: */ false)
+	mut cliq := cliq::Builder{
+		Args: {
+			// flag: default value (type)
+			"ping": false,
+			"message": "",
+		},
+	}.Help().Build()
 
-	if cliq.Res["version"] {
-		println("version goes here...")
+	cliq.GetCLI()
+	cliq.Parse()
+
+	ping := cliq.Get("ping")       // bool due to the default value
+	message := cliq.Get("message") // str due to the default value
+
+	if ping == true {
+		print("pong! ")
+		println(message)
 	}
 }
 ```
