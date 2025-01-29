@@ -8,8 +8,9 @@ JULEC = julec
 JULEFMT = julefmt
 
 NAME = cliq
+MODULES = internal
 EXAMPLES = simple autoHelp defaultValues
-LIB = $(NAME).jule LICENSE README.md
+LIB = $(NAME).jule $(MODULES) jule.mod LICENSE README.md
 
 examples:
 	mkdir -p examples/bin
@@ -30,6 +31,9 @@ run-examples: examples
 
 format:
 	$(JULEFMT) -w .
+	@for module in $(MODULES); do \
+		$(JULEFMT) -w $$module; \
+	done
 	@for example in $(EXAMPLES); do \
 		$(JULEFMT) -w examples/$$example; \
 	done

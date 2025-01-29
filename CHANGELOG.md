@@ -2,6 +2,24 @@
 
 All notable changes to jule.nvim will be documented in this file.
 
+## [0.0.1] - 2025-01-29
+
+### 🚀 Features
+
+- basic flag functionality ([dbfe9b3](https://github.com/julelang/jule.nvim/commit/dbfe9b3c344a344666f62bd94d47fefeaab688ea))
+- errors & --no functionality ([8e43d26](https://github.com/julelang/jule.nvim/commit/8e43d268af67eea9b365b0fdefe698fd09b3c16b))
+- str arguments ([6b02794](https://github.com/julelang/jule.nvim/commit/6b027942a224c7a8767c447fd47e053c85fb4f46))
+
+### 📚 Documentation
+
+- *(readme)* update the main example ([97042b0](https://github.com/julelang/jule.nvim/commit/97042b0c260b31aade07ff317c4b3a4b27e92e25))
+
+### ⚙️ Miscellaneous Tasks
+
+- *(repo)* add funding ([b590ea1](https://github.com/julelang/jule.nvim/commit/b590ea18fecf9894dd8bb9ba1c332ef3866163d2))
+- *(ci)* add `typos` ([9a7a9c1](https://github.com/julelang/jule.nvim/commit/9a7a9c16bcf1788cfd06fc9c98751a1cd0777947))
+- redesign the repo ([b6e9b4b](https://github.com/julelang/jule.nvim/commit/b6e9b4ba262346a59f0d9c6918301ca2a3dc5d27))
+
 ## [0.0.1-pre1] - 2024-12-22
 
 ### 🚀 Features
