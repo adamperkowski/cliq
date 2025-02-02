@@ -1,9 +1,8 @@
-use cliq ".."
 use "std/testing"
 
 #test
 fn autoHelp(t: &testing::T) {
-	builder := cliq::Builder{Args: {}}.Help()
+	builder := Builder{Args: {}}.Help()
 
 	cliq := builder.Build()
 
@@ -17,7 +16,7 @@ fn autoHelp(t: &testing::T) {
 
 #test
 fn getting(t: &testing::T) {
-	builder := cliq::Builder{
+	builder := Builder{
 		Args: {
 			"test": false,
 			"--another": true,
@@ -27,13 +26,13 @@ fn getting(t: &testing::T) {
 	cliq := builder.Build()
 
 	// this needs to test type matching
-	t.Assert(cliq.Get("test") == false, "--test should be true")
+	t.Assert(cliq.Get("test") == false, "--test should be false")
 	t.Assert(cliq.Get("another") == true, "--another should be true")
 }
 
 #test
 fn parsing(t: &testing::T) {
-	builder := cliq::Builder{
+	builder := Builder{
 		Args: {
 			"test": false,
 			"another": true,

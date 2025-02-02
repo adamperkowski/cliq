@@ -9,14 +9,15 @@ JULEFMT = julefmt
 
 NAME = cliq
 MODULES = internal
-EXAMPLES = simple autoHelp defaultValues
+ALL = . $(MODULES)
 LIB = $(NAME).jule $(MODULES) jule.mod LICENSE README.md
+EXAMPLES = simple autoHelp defaultValues
 
 examples:
 	mkdir -p examples/bin
 	@for example in $(EXAMPLES); do \
 		cd examples/$$example; \
-		echo "Building $$example..."; \
+		echo "Building $$example ..."; \
 		$(JULEC) . -o ../bin/$$example; \
 		cd ../..; \
 	done
@@ -24,26 +25,33 @@ examples:
 run-examples: examples
 	echo
 	@for example in $(EXAMPLES); do \
-		echo -e "Running $$example..."; \
+		echo "Running $$example ..."; \
 		./examples/bin/$$example $(TESTARGS); \
 		echo; \
 	done
 
 format:
-	$(JULEFMT) -w .
-	@for module in $(MODULES); do \
+	@for module in $(ALL); do \
+		echo "Formatting $$module ..."; \
 		$(JULEFMT) -w $$module; \
 	done
 	@for example in $(EXAMPLES); do \
+		echo "Formatting examples/$$example ..."; \
 		$(JULEFMT) -w examples/$$example; \
 	done
 
 test:
-	cd tests
 	mkdir -p bin
-	$(JULEC) test . -o bin/$(NAME)_test
-	./bin/$(NAME)_test
-	cd ..
+	@for module in $(ALL); do \
+		echo -e "Testing $$module ...\n"; \
+		if $(JULEC) test $$module -o bin/$(NAME)_$$module-test; then \
+			if ! ./bin/$(NAME)_$$module-test; then \
+				exit 1; \
+			fi; \
+		else \
+			true; \
+		fi; \
+	done
 
 package:
 	mkdir -p $(NAME)
