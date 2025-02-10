@@ -1,4 +1,6 @@
 ## TODO
+- use `std/flag`
+
 - shell completion generation
 - manpage generation
 - markdown docs generation
